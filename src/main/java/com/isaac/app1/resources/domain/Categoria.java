@@ -1,11 +1,14 @@
 package com.isaac.app1.resources.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
 public class Categoria implements Serializable {
@@ -14,7 +17,11 @@ public class Categoria implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer Id;
+	
 	private String Nome;
+	
+	@ManyToMany(mappedBy = "categoria")
+	private List<Produto> produto = new ArrayList<>();
 	
 	public Categoria() {
 		
@@ -41,6 +48,13 @@ public class Categoria implements Serializable {
 	public void setNome(String nome) {
 		Nome = nome;
 	}
+	public List<Produto> getProduto() {
+		return produto;
+	}
+
+	public void setProduto(List<Produto> produto) {
+		this.produto = produto;
+	}
 
 	@Override
 	public int hashCode() {
@@ -66,6 +80,8 @@ public class Categoria implements Serializable {
 			return false;
 		return true;
 	}
+
+
 	
 	
 }
