@@ -13,6 +13,7 @@ import com.isaac.app1.Enums.EstadoPagamento;
 import com.isaac.app1.Enums.TipoCliente;
 import com.isaac.app1.repository.CidadeRepository;
 import com.isaac.app1.repository.EstadoRepository;
+import com.isaac.app1.repository.ItemPedidoRepository;
 import com.isaac.app1.repository.PagamentoRepository;
 import com.isaac.app1.repository.PedidoRepository;
 import com.isaac.app1.repository.categoriaRepository;
@@ -24,6 +25,7 @@ import com.isaac.app1.resources.domain.Cidade;
 import com.isaac.app1.resources.domain.Cliente;
 import com.isaac.app1.resources.domain.Endereco;
 import com.isaac.app1.resources.domain.Estado;
+import com.isaac.app1.resources.domain.ItemPedido;
 import com.isaac.app1.resources.domain.Pagamento;
 import com.isaac.app1.resources.domain.PagamentoComBoleto;
 import com.isaac.app1.resources.domain.PagamentoComCartao;
@@ -56,6 +58,9 @@ public class App1Application implements CommandLineRunner {
 	
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
+	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(App1Application.class, args);
@@ -117,11 +122,24 @@ public class App1Application implements CommandLineRunner {
 		 Pagamento pag2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pe2, sdf.parse("20/09/2018 11:00"), null);
 		 pe2.setPagamento(pag2);
 		 
-		 cli1.getPedido().addAll(Arrays.asList(pe1, pe2));
-		 
+		 cli1.getPedido().addAll(Arrays.asList(pe1, pe2));	 
 		 
 		 pedidoRepository.saveAll(Arrays.asList(pe1, pe2));
 		 pagamentoRepository.saveAll(Arrays.asList(pag1, pag2));
+		 
+		 ItemPedido it1 = new ItemPedido(pe1, p1, 0.00, 1, 10.00);
+		 ItemPedido it2 = new ItemPedido(pe1, p3, 1.00, 3, 200.00);
+		 ItemPedido it3 = new ItemPedido(pe2, p2, 2.99, 2, 2.50);
+		 
+		 pe1.getItempedido().addAll(Arrays.asList(it1, it2));
+		 pe2.getItempedido().addAll(Arrays.asList(it3));
+		 
+		 p1.getItempedido().addAll(Arrays.asList(it1));
+		 p2.getItempedido().addAll(Arrays.asList(it3));
+		 p3.getItempedido().addAll(Arrays.asList(it2));
+		 
+		 itemPedidoRepository.saveAll(Arrays.asList(it1, it2, it3));
+		 
 		 
 	}
 }
