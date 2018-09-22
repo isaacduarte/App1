@@ -24,7 +24,7 @@ public class CategoriaResource {
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<?> find(@PathVariable Integer id) {
 		
-		Categoria obj = service.buscar(id);
+		Categoria obj = service.Find(id);
 		return ResponseEntity.ok().body(obj);
 		
 	}
@@ -36,5 +36,17 @@ public class CategoriaResource {
 				  .buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	} 
-	
+	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	public ResponseEntity<Void> Upadate(@RequestBody Categoria obj, @PathVariable Integer id){
+		obj.setId(id);
+		obj= service.Update(obj);
+		return ResponseEntity.noContent().build();	
+		
+	}
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> Delete(@PathVariable Integer id){
+		service.Delete(id);
+		return ResponseEntity.noContent().build();	
+		
+	}
 }
